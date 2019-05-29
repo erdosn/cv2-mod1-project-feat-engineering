@@ -256,114 +256,25 @@ plt.show()
 ```
 
 
-    -------------------------------------------------------------------------
-
-    KeyboardInterrupt                       Traceback (most recent call last)
-
-    <ipython-input-6-96f0f7ec8464> in <module>()
-    ----> 1 pd.plotting.scatter_matrix(df, figsize=(20, 20))
-          2 plt.show()
-
-
-    /anaconda3/lib/python3.6/site-packages/pandas/plotting/_misc.py in scatter_matrix(frame, alpha, figsize, ax, grid, diagonal, marker, density_kwds, hist_kwds, range_padding, **kwds)
-         58     naxes = n * n
-         59     fig, axes = _subplots(naxes=naxes, figsize=figsize, ax=ax,
-    ---> 60                           squeeze=False)
-         61 
-         62     # no gaps between subplots
-
-
-    /anaconda3/lib/python3.6/site-packages/pandas/plotting/_tools.py in _subplots(naxes, sharex, sharey, squeeze, subplot_kw, ax, layout, layout_type, **fig_kw)
-        253             kwds['sharex'] = None
-        254             kwds['sharey'] = None
-    --> 255         ax = fig.add_subplot(nrows, ncols, i + 1, **kwds)
-        256         axarr[i] = ax
-        257 
-
-
-    /anaconda3/lib/python3.6/site-packages/matplotlib/figure.py in add_subplot(self, *args, **kwargs)
-       1072                     self._axstack.remove(ax)
-       1073 
-    -> 1074             a = subplot_class_factory(projection_class)(self, *args, **kwargs)
-       1075 
-       1076         self._axstack.add(key, a)
-
-
-    /anaconda3/lib/python3.6/site-packages/matplotlib/axes/_subplots.py in __init__(self, fig, *args, **kwargs)
-         71 
-         72         # _axes_class is set in the subplot_class_factory
-    ---> 73         self._axes_class.__init__(self, fig, self.figbox, **kwargs)
-         74 
-         75     def __reduce__(self):
-
-
-    /anaconda3/lib/python3.6/site-packages/matplotlib/axes/_base.py in __init__(self, fig, rect, facecolor, frameon, sharex, sharey, label, xscale, yscale, axisbg, **kwargs)
-        539 
-        540         self._connected = {}  # a dict from events to (id, func)
-    --> 541         self.cla()
-        542         # funcs used to format x and y - fall back on major formatters
-        543         self.fmt_xdata = None
-
-
-    /anaconda3/lib/python3.6/site-packages/matplotlib/axes/_base.py in cla(self)
-        977         yaxis_visible = self.yaxis.get_visible()
-        978 
-    --> 979         self.xaxis.cla()
-        980         self.yaxis.cla()
-        981         for name, spine in six.iteritems(self.spines):
-
-
-    /anaconda3/lib/python3.6/site-packages/matplotlib/axis.py in cla(self)
-        742     def cla(self):
-        743         'clear the current axis'
-    --> 744         self.set_major_locator(mticker.AutoLocator())
-        745         self.set_major_formatter(mticker.ScalarFormatter())
-        746         self.set_minor_locator(mticker.NullLocator())
-
-
-    /anaconda3/lib/python3.6/site-packages/matplotlib/ticker.py in __init__(self)
-       2489             nbins = 'auto'
-       2490             steps = [1, 2, 2.5, 5, 10]
-    -> 2491         MaxNLocator.__init__(self, nbins=nbins, steps=steps)
-       2492 
-       2493 
-
-
-    /anaconda3/lib/python3.6/site-packages/matplotlib/ticker.py in __init__(self, *args, **kwargs)
-       1838                 raise ValueError(
-       1839                     "Keywords are required for all arguments except 'nbins'")
-    -> 1840         self.set_params(**self.default_params)
-       1841         self.set_params(**kwargs)
-       1842 
-
-
-    /anaconda3/lib/python3.6/site-packages/matplotlib/ticker.py in set_params(self, **kwargs)
-       1894             else:
-       1895                 self._steps = self._validate_steps(steps)
-    -> 1896             self._extended_steps = self._staircase(self._steps)
-       1897         if 'integer' in kwargs:
-       1898             self._integer = kwargs['integer']
-
-
-    /anaconda3/lib/python3.6/site-packages/matplotlib/ticker.py in _staircase(steps)
-       1865         # step will be found.  This is probably much larger
-       1866         # than necessary.
-    -> 1867         flights = (0.1 * steps[:-1], steps, 10 * steps[1])
-       1868         return np.hstack(flights)
-       1869 
-
-
-    KeyboardInterrupt: 
-
-
-
-![png](lesson-plan_files/lesson-plan_10_1.png)
-
-
-
 ```python
 plt.hist(df["RAD"], bins=20)
 ```
+
+
+
+
+    (array([ 41.,  36., 107., 103.,  26.,  16.,  19.,   0.,   0.,   0.,   0.,
+              0.,   0.,   0.,   0.,   0.,   0.,   0.,   0., 127.]),
+     array([ 1.  ,  2.15,  3.3 ,  4.45,  5.6 ,  6.75,  7.9 ,  9.05, 10.2 ,
+            11.35, 12.5 , 13.65, 14.8 , 15.95, 17.1 , 18.25, 19.4 , 20.55,
+            21.7 , 22.85, 24.  ]),
+     <a list of 20 Patch objects>)
+
+
+
+
+![png](lesson-plan_files/lesson-plan_11_1.png)
+
 
 
 ```python
@@ -1034,87 +945,30 @@ np.corrcoef([df.CRIM + df.RAD], df.target)
 
 
 ```python
-x = df.crime_rad_feature
-y = df.target
-linreg = sm.OLS(y, x).fit()
-linreg.summary()
-```
+# df.CRIM -> crime rate
+# df.RAD -> radius from train lines (public transportation)
 
-
-
-
-<table class="simpletable">
-<caption>OLS Regression Results</caption>
-<tr>
-  <th>Dep. Variable:</th>         <td>target</td>      <th>  R-squared:         </th> <td>   0.249</td> 
-</tr>
-<tr>
-  <th>Model:</th>                   <td>OLS</td>       <th>  Adj. R-squared:    </th> <td>   0.248</td> 
-</tr>
-<tr>
-  <th>Method:</th>             <td>Least Squares</td>  <th>  F-statistic:       </th> <td>   157.3</td> 
-</tr>
-<tr>
-  <th>Date:</th>             <td>Tue, 28 May 2019</td> <th>  Prob (F-statistic):</th> <td>2.30e-31</td> 
-</tr>
-<tr>
-  <th>Time:</th>                 <td>15:06:32</td>     <th>  Log-Likelihood:    </th> <td> -5355.0</td> 
-</tr>
-<tr>
-  <th>No. Observations:</th>      <td>   475</td>      <th>  AIC:               </th> <td>1.071e+04</td>
-</tr>
-<tr>
-  <th>Df Residuals:</th>          <td>   474</td>      <th>  BIC:               </th> <td>1.072e+04</td>
-</tr>
-<tr>
-  <th>Df Model:</th>              <td>     1</td>      <th>                     </th>     <td> </td>    
-</tr>
-<tr>
-  <th>Covariance Type:</th>      <td>nonrobust</td>    <th>                     </th>     <td> </td>    
-</tr>
-</table>
-<table class="simpletable">
-<tr>
-          <td></td>             <th>coef</th>     <th>std err</th>      <th>t</th>      <th>P>|t|</th>  <th>[0.025</th>    <th>0.975]</th>  
-</tr>
-<tr>
-  <th>crime_rad_feature</th> <td> 1037.6812</td> <td>   82.730</td> <td>   12.543</td> <td> 0.000</td> <td>  875.118</td> <td> 1200.245</td>
-</tr>
-</table>
-<table class="simpletable">
-<tr>
-  <th>Omnibus:</th>       <td>84.877</td> <th>  Durbin-Watson:     </th> <td>   0.109</td>
-</tr>
-<tr>
-  <th>Prob(Omnibus):</th> <td> 0.000</td> <th>  Jarque-Bera (JB):  </th> <td> 137.298</td>
-</tr>
-<tr>
-  <th>Skew:</th>          <td>-1.097</td> <th>  Prob(JB):          </th> <td>1.53e-30</td>
-</tr>
-<tr>
-  <th>Kurtosis:</th>      <td> 4.456</td> <th>  Cond. No.          </th> <td>    1.00</td>
-</tr>
-</table>
-
-
-
-
-```python
 weights = np.linspace(0, 1, 10000)
 max_corr = -1
-desired_weights = None
+best_weights = None
 corrs = []
 
 for index, weight in enumerate(weights):
-    w1 = weight
-    w2 = 1 - weight
-    vals = w1*df.CRIM + w2*df.RAD
-    corr_coeff = np.abs(np.corrcoef(vals, df.target))[0][1]
+    w1 = weight # get the first weight value
+    w2 = 1 - weight # get the second weight value
+    vals = w1*df.CRIM + w2*df.RAD # create a linear combination of the columns
+    corr_coeff = np.abs(np.corrcoef(vals, df.target))[0][1] # get the corrcoeff with the target
+    
+    # if the corr_coeff is larger than the max, store the weights and change the max
     if corr_coeff > max_corr:
-        desired_weights = [w1, w2]
+        best_weights = [w1, w2]
         max_corr = corr_coeff
-    corrs.append(corr_coeff)        
-desired_weights
+        
+    # store the correlation coefficients to a list
+    corrs.append(corr_coeff)  
+    
+# output the desired weights
+best_weights
 ```
 
 
@@ -1126,15 +980,18 @@ desired_weights
 
 
 ```python
+# plot the w1 vs coeff 
 plt.figure(figsize=(8, 5))
 plt.plot(weights, corrs)
-plt.xlabel("weights")
+plt.vlines(x=best_weights[0], ymin=0.48, ymax=max_corr, linestyle='--', colors='r', linewidth=2, label='max corr')
+plt.legend()
+plt.xlabel("w1")
 plt.ylabel("corr coeff")
 plt.show()
 ```
 
 
-![png](lesson-plan_files/lesson-plan_35_0.png)
+![png](lesson-plan_files/lesson-plan_34_0.png)
 
 
 
