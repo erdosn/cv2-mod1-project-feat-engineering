@@ -26,6 +26,10 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 ```
 
+    /anaconda3/lib/python3.6/site-packages/statsmodels/compat/pandas.py:56: FutureWarning: The pandas.core.datetools module is deprecated and will be removed in a future version. Please use the pandas.tseries module instead.
+      from pandas.core import datetools
+
+
 
 ```python
 boston = load_boston()
@@ -252,29 +256,114 @@ plt.show()
 ```
 
 
-![png](lesson-plan_files/lesson-plan_10_0.png)
+    -------------------------------------------------------------------------
+
+    KeyboardInterrupt                       Traceback (most recent call last)
+
+    <ipython-input-6-96f0f7ec8464> in <module>()
+    ----> 1 pd.plotting.scatter_matrix(df, figsize=(20, 20))
+          2 plt.show()
+
+
+    /anaconda3/lib/python3.6/site-packages/pandas/plotting/_misc.py in scatter_matrix(frame, alpha, figsize, ax, grid, diagonal, marker, density_kwds, hist_kwds, range_padding, **kwds)
+         58     naxes = n * n
+         59     fig, axes = _subplots(naxes=naxes, figsize=figsize, ax=ax,
+    ---> 60                           squeeze=False)
+         61 
+         62     # no gaps between subplots
+
+
+    /anaconda3/lib/python3.6/site-packages/pandas/plotting/_tools.py in _subplots(naxes, sharex, sharey, squeeze, subplot_kw, ax, layout, layout_type, **fig_kw)
+        253             kwds['sharex'] = None
+        254             kwds['sharey'] = None
+    --> 255         ax = fig.add_subplot(nrows, ncols, i + 1, **kwds)
+        256         axarr[i] = ax
+        257 
+
+
+    /anaconda3/lib/python3.6/site-packages/matplotlib/figure.py in add_subplot(self, *args, **kwargs)
+       1072                     self._axstack.remove(ax)
+       1073 
+    -> 1074             a = subplot_class_factory(projection_class)(self, *args, **kwargs)
+       1075 
+       1076         self._axstack.add(key, a)
+
+
+    /anaconda3/lib/python3.6/site-packages/matplotlib/axes/_subplots.py in __init__(self, fig, *args, **kwargs)
+         71 
+         72         # _axes_class is set in the subplot_class_factory
+    ---> 73         self._axes_class.__init__(self, fig, self.figbox, **kwargs)
+         74 
+         75     def __reduce__(self):
+
+
+    /anaconda3/lib/python3.6/site-packages/matplotlib/axes/_base.py in __init__(self, fig, rect, facecolor, frameon, sharex, sharey, label, xscale, yscale, axisbg, **kwargs)
+        539 
+        540         self._connected = {}  # a dict from events to (id, func)
+    --> 541         self.cla()
+        542         # funcs used to format x and y - fall back on major formatters
+        543         self.fmt_xdata = None
+
+
+    /anaconda3/lib/python3.6/site-packages/matplotlib/axes/_base.py in cla(self)
+        977         yaxis_visible = self.yaxis.get_visible()
+        978 
+    --> 979         self.xaxis.cla()
+        980         self.yaxis.cla()
+        981         for name, spine in six.iteritems(self.spines):
+
+
+    /anaconda3/lib/python3.6/site-packages/matplotlib/axis.py in cla(self)
+        742     def cla(self):
+        743         'clear the current axis'
+    --> 744         self.set_major_locator(mticker.AutoLocator())
+        745         self.set_major_formatter(mticker.ScalarFormatter())
+        746         self.set_minor_locator(mticker.NullLocator())
+
+
+    /anaconda3/lib/python3.6/site-packages/matplotlib/ticker.py in __init__(self)
+       2489             nbins = 'auto'
+       2490             steps = [1, 2, 2.5, 5, 10]
+    -> 2491         MaxNLocator.__init__(self, nbins=nbins, steps=steps)
+       2492 
+       2493 
+
+
+    /anaconda3/lib/python3.6/site-packages/matplotlib/ticker.py in __init__(self, *args, **kwargs)
+       1838                 raise ValueError(
+       1839                     "Keywords are required for all arguments except 'nbins'")
+    -> 1840         self.set_params(**self.default_params)
+       1841         self.set_params(**kwargs)
+       1842 
+
+
+    /anaconda3/lib/python3.6/site-packages/matplotlib/ticker.py in set_params(self, **kwargs)
+       1894             else:
+       1895                 self._steps = self._validate_steps(steps)
+    -> 1896             self._extended_steps = self._staircase(self._steps)
+       1897         if 'integer' in kwargs:
+       1898             self._integer = kwargs['integer']
+
+
+    /anaconda3/lib/python3.6/site-packages/matplotlib/ticker.py in _staircase(steps)
+       1865         # step will be found.  This is probably much larger
+       1866         # than necessary.
+    -> 1867         flights = (0.1 * steps[:-1], steps, 10 * steps[1])
+       1868         return np.hstack(flights)
+       1869 
+
+
+    KeyboardInterrupt: 
+
+
+
+![png](lesson-plan_files/lesson-plan_10_1.png)
 
 
 
 ```python
 plt.hist(df["RAD"], bins=20)
 ```
-
-
-
-
-    (array([ 41.,  36., 107., 103.,  26.,  16.,  19.,   0.,   0.,   0.,   0.,
-              0.,   0.,   0.,   0.,   0.,   0.,   0.,   0., 127.]),
-     array([ 1.  ,  2.15,  3.3 ,  4.45,  5.6 ,  6.75,  7.9 ,  9.05, 10.2 ,
-            11.35, 12.5 , 13.65, 14.8 , 15.95, 17.1 , 18.25, 19.4 , 20.55,
-            21.7 , 22.85, 24.  ]),
-     <a list of 20 Patch objects>)
-
-
-
-
-![png](lesson-plan_files/lesson-plan_11_1.png)
-
 
 
 ```python
@@ -479,8 +568,8 @@ np.corrcoef(df.target, df.rad_cat)
 
 
 
-    array([[ 1.        , -0.41046688],
-           [-0.41046688,  1.        ]])
+    array([[ 1.        , -0.51815814],
+           [-0.51815814,  1.        ]])
 
 
 
@@ -1014,14 +1103,17 @@ linreg.summary()
 weights = np.linspace(0, 1, 10000)
 max_corr = -1
 desired_weights = None
-for weight in weights:
-    weight1 = weight
-    weight2 = 1 - weight
-    vals = weight1*df.CRIM + weight2*df.RAD
+corrs = []
+
+for index, weight in enumerate(weights):
+    w1 = weight
+    w2 = 1 - weight
+    vals = w1*df.CRIM + w2*df.RAD
     corr_coeff = np.abs(np.corrcoef(vals, df.target))[0][1]
     if corr_coeff > max_corr:
-        desired_weights = [weight1, weight2]
+        desired_weights = [w1, w2]
         max_corr = corr_coeff
+    corrs.append(corr_coeff)        
 desired_weights
 ```
 
@@ -1030,6 +1122,19 @@ desired_weights
 
     [0.451945194519452, 0.5480548054805481]
 
+
+
+
+```python
+plt.figure(figsize=(8, 5))
+plt.plot(weights, corrs)
+plt.xlabel("weights")
+plt.ylabel("corr coeff")
+plt.show()
+```
+
+
+![png](lesson-plan_files/lesson-plan_35_0.png)
 
 
 
